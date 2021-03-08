@@ -1,4 +1,43 @@
+# Forearms-on-bars aero position comparison model
+
+Code for modelling estimated aerodynamic drag(CdA) advantage for __forearms-on-bars__ aero position.
+
+## Installing dependencies
+
+The following packages are required:
+
+```
+library(rstan)
+library(bayesplot)
+
+```
+
+## How to run the code
+
+```
+Rscript forearms-advantage.R
+```
+
+## Results
+
+- Figures have the images with CdA per position, defference between forearms-on-bars and UCI legal position.
+
+
+
 2021-03-03
+
+j: 1..5
+mj ~ Normal(mh, ro)
+i: 1..15
+yi ~ Normal(mj, sigma)
+
+H1: CdA2 - CdA3 > 0
+H2: mean((CdA3, CdA2)) > CdA5
+
+
+BFが欲しい
+効果量が欲しい？
+
 
 9:34 start
 
