@@ -51,7 +51,10 @@ plot(diffp)
 ggsave("figure2.png")
 
 
+TukeyHSD(aov(df$CdA ~ df$Position))
+
 print(fit)
+
 diff_illegal <- extract(fit)$diff_illegal
 diff_legal <- extract(fit)$diff_legal
 paste("H1: UCI-Illegal < UCI-Legal is ", sum(ifelse(diff_illegal < 0, 1, 0)) / length(diff_illegal))
