@@ -17,6 +17,6 @@ model {
 }
 
 generated quantities {
-  real diff_illegal = mu[5] - mean({mu[2], mu[3]});  // UCI illegal - UCI legals
-  real diff_legal = mu[2] - mu[3];  // bracket aero - drop aero
+  real diff_illegal = mean({mu[2], mu[3]}) - mu[5];  // UCI legals - illegal
+  real diff_legal = mu[3] - mu[2];  // drop aero - bracket aero
 }
