@@ -45,14 +45,16 @@ diffp <- diffp +
   scale_y_discrete(labels=c(
     'diff_legal'='Bracket-aero - Drop-aero',
     'diff_illegal'='Bracket-aero - Forearms'))
+x_illegal = summary(fit)$summary['diff_illegal', 'mean']
+x_legal = summary(fit)$summary['diff_legal', 'mean']
 diffp <- diffp + cda_annotate(fit, 'diff_illegal', 1) +
   cda_annotate(fit, 'diff_legal', 2) +
-  annotate("segment", x=0, y=0.9, xend=0.048, yend=0.9,
+  annotate("segment", x=0, y=0.9, xend=x_illegal, yend=0.9,
            size=0.5, arrow=arrow(length=unit(0.015, 'npc'))) +
-  annotate("text", x=0.048 + 0.005, y=0.9, hjust="left", label="'Forearms' is faster") +
-  annotate("segment", x=0, y=1.9, xend=-0.0076, yend=1.9,
+  annotate("text", x=x_illegal + 0.005, y=0.9, hjust="left", label="'Forearms' is faster") +
+  annotate("segment", x=0, y=1.9, xend=x_legal, yend=1.9,
            size=0.5, arrow=arrow(length=unit(0.015, 'npc'))) +
-  annotate("text", x=-0.0076 - 0.005, y=1.9, hjust="right", label="'Drop-aero' may be slower?")
+  annotate("text", x=x_legal - 0.005, y=1.9, hjust="right", label="'Drop-aero' may be slower")
 
 plot(diffp)
 ggsave("figure2.png")
@@ -66,5 +68,5 @@ diff_legal <- extract(fit)$diff_legal
 diff_illegal <- extract(fit)$diff_illegal
 paste("H1: Bracket-aero > Drop-aero is",
       sum(diff_legal > 0) / length(diff_legal))
-paste("H2: Forearms > Bracket-aero is",
+paste("H2: Bracket-aero > Forearms is",
       sum(diff_illegal > 0) / length(diff_illegal))

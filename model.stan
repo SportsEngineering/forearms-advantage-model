@@ -19,5 +19,4 @@ model {
 generated quantities {
   real diff_legal = mu[2] - mu[3];  // Bracket-aero - Drop-aero
   real diff_illegal = mu[2] - mu[5];  // Bracket-aero - Forearms
-
 }
