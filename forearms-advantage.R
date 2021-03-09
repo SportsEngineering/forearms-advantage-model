@@ -37,18 +37,22 @@ plot(p)
 ggsave("figure1.png")  # Estimated CdA per position
 
 
-diffp <- mcmc_areas(fit, pars=c('diff_legal', 'diff_illegal'), prob=0.95)
+diffp <- mcmc_areas(fit, pars=c('diff_illegal', 'diff_legal'), prob=0.95)
 diffp <- diffp +
   labs(title="CdA advantage between positions",
-  subtitle="The difference between UCI Illegal forearms and UCI legal aero positions.\nand the difference between UCI legal drop and bracket aero positions.") +
+       subtitle="The difference between 'Bracket-aero' and 'Drop-aero' positions.\nand the difference between 'Bracket-aero' and 'Forearms'.") +
   xlab("Advantage in CdA") +
-  scale_y_discrete(labels=c('diff_legal'='UCI legal', 'diff_illegal'='Forearms'))
-diffp <- diffp + cda_annotate(fit, 'diff_illegal', 2) +
-  cda_annotate(fit, 'diff_legal', 1) +
-  annotate("segment", x=0, y=0.5, xend=0.15,yend=0.5, arrow=arrow(), size=0.5, color="darkgray") +
-  annotate("text", x=0.12, y=0.5 + 0.1 , label="Faster", color="darkgray") +
-  annotate("segment", x=0, y=0.5, xend=-0.095, yend=0.5, arrow=arrow(), size=0.5, color="gray") +
-  annotate("text", x=-0.06, y=0.5 + 0.1, label="Slower", color="gray")
+  scale_y_discrete(labels=c(
+    'diff_legal'='Bracket-aero - Drop-aero',
+    'diff_illegal'='Bracket-aero - Forearms'))
+diffp <- diffp + cda_annotate(fit, 'diff_illegal', 1) +
+  cda_annotate(fit, 'diff_legal', 2) +
+  annotate("segment", x=0, y=0.9, xend=0.048, yend=0.9,
+           size=0.5, arrow=arrow(length=unit(0.015, 'npc'))) +
+  annotate("text", x=0.048 + 0.005, y=0.9, hjust="left", label="'Forearms' is faster") +
+  annotate("segment", x=0, y=1.9, xend=-0.0076, yend=1.9,
+           size=0.5, arrow=arrow(length=unit(0.015, 'npc'))) +
+  annotate("text", x=-0.0076 - 0.005, y=1.9, hjust="right", label="'Drop-aero' may be slower?")
 
 plot(diffp)
 ggsave("figure2.png")
@@ -58,7 +62,9 @@ TukeyHSD(aov(df$CdA ~ df$Position))
 
 print(fit)
 
-diff_illegal <- extract(fit)$diff_illegal
 diff_legal <- extract(fit)$diff_legal
-paste("H1: UCI-Illegal > UCI-Legal is ", sum(ifelse(diff_illegal > 0, 1, 0)) / length(diff_illegal))
-paste("H2: Bracket-aero > Drop-aero is ", sum(ifelse(diff_legal > 0, 1, 0)) / length(diff_legal))
+diff_illegal <- extract(fit)$diff_illegal
+paste("H1: Bracket-aero > Drop-aero is",
+      sum(diff_legal > 0) / length(diff_legal))
+paste("H2: Forearms > Bracket-aero is",
+      sum(diff_illegal > 0) / length(diff_illegal))
