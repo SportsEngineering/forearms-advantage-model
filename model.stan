@@ -17,6 +17,7 @@ model {
 }
 
 generated quantities {
-  real diff_legal = mu[2] - mu[3];  // Bracket-aero - Drop-aero
-  real diff_illegal = mu[2] - mu[5];  // Bracket-aero - Forearms
+  real baseline = mu[2];
+  real diff_drop_aero = mu[3] - baseline;  // Drop-aero - Bracket-aero
+  real diff_forearms = mu[5] - baseline;  // Forearms - Bracket-aero
 }
