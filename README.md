@@ -9,7 +9,6 @@ The following packages are required:
 ```
 library(rstan)
 library(bayesplot)
-
 ```
 
 ## How to run the code
@@ -22,3 +21,5 @@ Rscript forearms-advantage.R
 
 - Figures have the images with CdA per position, defference between forearms-on-bars and UCI legal position.
 
+![Figure 1](figure1.png)
+![Figure 2](figure2.png)
