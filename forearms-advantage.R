@@ -3,19 +3,17 @@ library(bayesplot)
 
 
 df <- read.csv("data.csv", stringsAsFactors=FALSE)
-positions <- c("Newtral", "Bracket-aero", "Drop-aero", "Upright", "Forearms")
+positions <- c("Neutral", "Bracket-aero", "Drop-aero", "Upright", "Forearms")
 df$Position <- factor(df$Position, levels=positions)
 model_data <- list(
-  y=df$CdA, N=length(df$CdA),
-  POSITION=as.integer(df$Position), P=length(unique(df$Position))
+  CdA=df$CdA, N=length(df$CdA),
+  Position=as.integer(df$Position), N_Position=length(unique(df$Position))
 )
 fit <- stan("model.stan", data=model_data, seed=1, iter=150000, warmup=10000, chains=4)
 
 names(positions) <- c('mu[1]', 'mu[2]', 'mu[3]', 'mu[4]', 'mu[5]')
-p <- mcmc_areas(fit,
-                pars = c("mu[4]", "mu[1]", "mu[3]", "mu[2]", "mu[5]"),
-                prob = 0.95)
-p <- p + labs(title="Estimated aerodynamic drag coefficient") +
+p <- mcmc_areas(fit, pars=c("mu[4]", "mu[1]", "mu[3]", "mu[2]", "mu[5]"), prob = 0.95) +
+  labs(title="Estimated aerodynamic drag coefficient") +
   scale_y_discrete(labels=positions) +
   xlab("CdA")
 
