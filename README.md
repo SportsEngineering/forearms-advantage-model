@@ -9,6 +9,8 @@ The following packages are required:
 ```
 library(rstan)
 library(bayesplot)
+library(bridgesampling)
+
 ```
 
 ## How to run the code
