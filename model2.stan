@@ -1,25 +1,28 @@
 data {
-  int<lower=0> N;
-  real<lower=0> CdA[N];
-  int<lower=0> Position[N];
-  int<lower=0> N_Position;
-
+  int<lower=0> N;      // number of CdA
+  real<lower=0> y[N];  // CdA
+  int<lower=0> position[N];
+  int<lower=0> P;      // number of position
 }
 
 parameters {
   real<lower=0> rider;
   real<lower=0> sigma;
-  real effect[N_Position];
-  real<lower=0> effect_sigma;
+  real effect[P];
+  real effect_sigma;
 }
 
 model {
-  for (i in 1:N_Position) {
+  rider ~ normal(0.30, 0.1);
+  sigma ~ normal(0, 1);
+  effect_sigma ~ normal(0, 1);
+
+  for (i in 1:P) {
     effect[i] ~ normal(0, effect_sigma);
   }
-
   for (i in 1:N) {
-    CdA[i] ~ normal(rider + effect[Position[i]], sigma);
+    int p = position[i];
+    y[i] ~ normal(rider + effect[p], sigma);
   }
 }
 

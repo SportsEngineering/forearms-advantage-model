@@ -1,19 +1,19 @@
 data {
-  int<lower=0> N;
-  real<lower=0> CdA[N];
-  int<lower=0> Position[N];
-  int<lower=0> N_Position;
+  int<lower=0> N;      // number of CdA
+  real<lower=0> y[N];  // CdA
+  int<lower=0> position[N];
+  int<lower=0> P;      // number of position
 }
 
 parameters {
-  real<lower=0> mu[N_Position];
-  real<lower=0> sigma[N_Position];
+  real<lower=0> mu[P];
+  real<lower=0> sigma[P];
 }
 
 model {
   for (i in 1:N) {
-    int position = Position[i];
-    CdA[i] ~ normal(mu[position], sigma[position]);
+    int p = position[i];
+    y[i] ~ normal(mu[p], sigma[p]);
   }
 }
 
