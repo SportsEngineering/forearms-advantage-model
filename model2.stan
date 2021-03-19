@@ -8,12 +8,12 @@ data {
 parameters {
   real<lower=0> rider;
   real<lower=0> sigma;
-  real effect[P];
-  real effect_sigma;
+  real<lower=-1, upper=1> effect[P];
+  real<lower=0> effect_sigma;
 }
 
 model {
-  rider ~ normal(0.30, 0.1);
+  rider ~ normal(0, 1);
   sigma ~ normal(0, 1);
   effect_sigma ~ normal(0, 1);
 

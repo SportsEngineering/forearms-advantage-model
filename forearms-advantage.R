@@ -7,17 +7,19 @@ df <- read.csv("data.csv", stringsAsFactors=FALSE)
 positions <- c("Neutral", "Bracket-aero", "Drop-aero", "Upright", "Forearms")
 df$Position <- factor(df$Position, levels=positions)
 model_data <- list(
-  CdA=df$CdA, N=length(df$CdA),
-  Position=as.integer(df$Position), N_Position=length(unique(df$Position))
+  y=df$CdA, N=length(df$CdA),
+  position=as.integer(df$Position), P=length(unique(df$Position))
 )
 
 options(mc.cores = parallel::detectCores())
 # separate mean and variance for each position model
-fit0 <- stan("model0.stan", data=model_data, seed=1, iter=10000, warmup=1000, chains=4)
+fit0 <- stan("model0.stan", data=model_data, seed=1, iter=10000, warmup=1000, chains=4,
+             control=list(adapt_delta=0.98))
 # common variance model
 fit1 <- stan("model1.stan", data=model_data, seed=1, iter=10000, warmup=1000, chains=4)
-# Hierarchical model of rider’s averages and position-specific effects
-fit2 <- stan("model2.stan", data=model_data, seed=1, iter=10000, warmup=1000, chains=4)
+# Hierarchical model of riders averages and position-specific effects
+fit2 <- stan("model2.stan", data=model_data, seed=1, iter=10000, warmup=1000, chains=4,
+             control=list(adapt_delta=0.95))
 
 h0 <- bridge_sampler(fit0, silent=TRUE)
 h1 <- bridge_sampler(fit1, silent=TRUE)
